@@ -227,6 +227,27 @@ class Tree {
     return findDepth(this.root, 0);
   }
 
+  //Returns true if the tree is balanced; false if it is not
+  isBalanced(root = this.root) {
+    let leftHeight = this.height(root.left); //Determines the maximum height of left sub-tree
+    let rightHeight = this.height(root.right); //Determines the maximum height of right sub-tree
+
+    if (Math.abs(leftHeight - rightHeight) <= 1) return true; //Returns true if the absolute value is less than or equal to 1
+
+    //Else returns false
+    return false;
+  }
+
+  rebalance() {
+    if (this.isBalanced()) {
+      return;
+    }
+    const newArray = [];
+    this.inOrder((node) => newArray.push(node.value));
+
+    this.root = this.buildTree(newArray);
+  }
+
   //Prints the tree in an understanding visual format
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
@@ -253,6 +274,11 @@ class Tree {
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.insert(7890000);
+tree.insert(-1);
+tree.insert(-10);
+tree.insert(-100);
+tree.insert(-10000);
+tree.insert(-10000000000);
 // console.log(tree.find(1))]
 tree.prettyPrint();
 console.log(`----------------------`);
@@ -264,4 +290,8 @@ console.log(`----------------------`);
 // console.log(`----------------------`);
 // tree.postOrder(getNode);
 console.log(tree.height(tree.root));
-console.log(tree.depth(7890000));
+console.log(tree.isBalanced());
+tree.rebalance();
+console.log(`----------------------`);
+tree.prettyPrint();
+console.log(tree.isBalanced());
