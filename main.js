@@ -190,6 +190,16 @@ class Tree {
     callback(root); //Recursively traverse the root node
   }
 
+  //Returns height of the tree(root of tree is passed as the parameter)
+  height(node) {
+    if(!node) return -1; //Returns -1 if tree is empty or current node does not exist
+
+    let leftHeight = this.height(node.left) //Height of the left leaves (ends when there is no longer a left leaf)
+    let rightHeight = this.height(node.right) //Height of the right leaves (ends when there is no longer a right leaf)
+
+    return Math.max(leftHeight, rightHeight) + 1; //The height of the current node is 1 plus the maximum height of its subtrees 
+  }
+
   //Prints the tree in an understanding visual format
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
@@ -219,10 +229,11 @@ tree.insert(7890000);
 // console.log(tree.find(1))]
 tree.prettyPrint();
 console.log(`----------------------`);
-tree.levelOrder(getNode);
-console.log(`----------------------`);
-tree.inOrder(getNode);
-console.log(`----------------------`);
-tree.preOrder(getNode);
-console.log(`----------------------`);
-tree.postOrder(getNode);
+// tree.levelOrder(getNode);
+// console.log(`----------------------`);
+// tree.inOrder(getNode);
+// console.log(`----------------------`);
+// tree.preOrder(getNode);
+// console.log(`----------------------`);
+// tree.postOrder(getNode);
+console.log(tree.height(tree.root))
