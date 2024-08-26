@@ -135,7 +135,7 @@ class Tree {
     return curr; //Returns smallest leaf
   }
 
-  //Traverse the tree in breadth-first level order and call the callback on each node as it traverses
+  //Traverses the tree in breadth-first level order and calls the callback on each node as it traverses
   levelOrder(callback, root = this.root) {
     if (!root) return null; //Returns null if the tree is empty; also the base case for recursive function
     if (!callback) {
@@ -143,15 +143,18 @@ class Tree {
     }
 
     let queue = [root]; //Queue with current root as the first element
-    while (queue.length) { //While queue is not empty
-      let currentNode = queue.shift(); //First element(current root) of queue gets removed and assigned to currentNode variable
+    while (queue.length) {
+      //While queue is not empty
+      let currentNode = queue.shift(); //First element (current root) of queue gets removed and assigned to the currentNode variable
 
       callback(currentNode); //Callback function called with currentNode as the parameter (this function returns the value of currentNode)
 
-      if (currentNode.left) { //If there exists the left child of current root
+      if (currentNode.left) {
+        //If there exists the left child of the current root
         queue.push(currentNode.left); //Then it is pushed to queue first
       }
-      if (currentNode.right) { //If there exists the right child of current root
+      if (currentNode.right) {
+        //If there exists the right child of the current root
         queue.push(currentNode.right); //Then it is pushed to queue after the left child of current root
       }
     }
@@ -190,14 +193,38 @@ class Tree {
     callback(root); //Recursively traverse the root node
   }
 
-  //Returns height of the tree(root of tree is passed as the parameter)
+  //Returns height of the tree (root of tree is passed as the parameter)
   height(node) {
-    if(!node) return -1; //Returns -1 if tree is empty or current node does not exist
+    if (!node) return -1; //Returns -1 if tree is empty or current node does not exist
 
-    let leftHeight = this.height(node.left) //Height of the left leaves (ends when there is no longer a left leaf)
-    let rightHeight = this.height(node.right) //Height of the right leaves (ends when there is no longer a right leaf)
+    let leftHeight = this.height(node.left); //Height of the left leaves (ends when there is no longer a left leaf)
+    let rightHeight = this.height(node.right); //Height of the right leaves (ends when there is no longer a right leaf)
 
-    return Math.max(leftHeight, rightHeight) + 1; //The height of the current node is 1 plus the maximum height of its subtrees 
+    return Math.max(leftHeight, rightHeight) + 1; //The height of the current node is 1 plus the maximum height of its subtrees
+  }
+
+  depth(node) {
+    // Helper function to find the depth of the target node (node passed as the parameter)
+    function findDepth(currentNode, currentDepth) {
+      if (!currentNode) {
+        return -1; // Returns -1 if target node is not found or the tree is empty
+      }
+      if (currentNode.value === node) {
+        return currentDepth; //Returns curent depth if the target node is found
+      }
+
+      // Search in the left subtree
+      let leftDepth = findDepth(currentNode.left, currentDepth + 1);
+      if (leftDepth !== -1) {
+        return leftDepth; // Target node found in the left subtree
+      }
+
+      // Search in the right subtree
+      return findDepth(currentNode.right, currentDepth + 1);
+    }
+
+    // Starts the depth search from the root
+    return findDepth(this.root, 0);
   }
 
   //Prints the tree in an understanding visual format
@@ -236,4 +263,5 @@ console.log(`----------------------`);
 // tree.preOrder(getNode);
 // console.log(`----------------------`);
 // tree.postOrder(getNode);
-console.log(tree.height(tree.root))
+console.log(tree.height(tree.root));
+console.log(tree.depth(7890000));
