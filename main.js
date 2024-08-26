@@ -13,7 +13,7 @@ function mergeSort(arr) {
 //Merge function which take two sub-arrays as parameter and returns a merged and sorted array
 function merge(leftArr, rightArr) {
   let sortedArr = [];
-   //While loop with the condition of having at least one element in both the sub-arrays
+  //While loop with the condition of having at least one element in both the sub-arrays
   while (leftArr.length && rightArr.length) {
     if (leftArr[0] < rightArr[0]) {
       sortedArr.push(leftArr.shift()); //Remove and pushes the first element of left sub-array to empty sortedArray if smaller than the first element of right sub-array
@@ -27,6 +27,11 @@ function merge(leftArr, rightArr) {
   return [...sortedArr, ...leftArr, ...rightArr];
   //Sorted array (left sub-array and right sub-array joined to it if not empty)
 }
+
+//Callback which returns the value of the node passed as the parameter (acts as the callback parameter of levelOrder, inOrder, preOrder and postOrder functions)
+const getNode = (node) => {
+  console.log(node.value);
+};
 
 //Nodes(leaves, branches or roots) of the binary tree
 class Node {
@@ -130,6 +135,61 @@ class Tree {
     return curr; //Returns smallest leaf
   }
 
+  //Traverse the tree in breadth-first level order and call the callback on each node as it traverses
+  levelOrder(callback, root = this.root) {
+    if (!root) return null; //Returns null if the tree is empty; also the base case for recursive function
+    if (!callback) {
+      throw new Error("Callback function not passed as parameter."); //Throws error if callback is not passed as the parameter
+    }
+
+    let queue = [root]; //Queue with current root as the first element
+    while (queue.length) { //While queue is not empty
+      let currentNode = queue.shift(); //First element(current root) of queue gets removed and assigned to currentNode variable
+
+      callback(currentNode); //Callback function called with currentNode as the parameter (this function returns the value of currentNode)
+
+      if (currentNode.left) { //If there exists the left child of current root
+        queue.push(currentNode.left); //Then it is pushed to queue first
+      }
+      if (currentNode.right) { //If there exists the right child of current root
+        queue.push(currentNode.right); //Then it is pushed to queue after the left child of current root
+      }
+    }
+  }
+
+  //In-order traversal(traverse left sub-tree first, folllowed by the root node and the right sub-tree)
+  inOrder(callback, root = this.root) {
+    if (!root) return null; //Returns null if the tree is empty; also the base case for recursive function
+    if (!callback) {
+      throw new Error("Callback function not passed as parameter."); //Throws error if callback is not passed as the parameter
+    }
+    this.inOrder(callback, root.left); //Recursively traverse the left sub-tree
+    callback(root); //Recursively traverse the root node
+    this.inOrder(callback, root.right); //Recursively traverse the right sub-tree
+  }
+
+  //Pre-order traversal(traverse root node first, folllowed by the left sub-tree and the right sub-tree)
+  preOrder(callback, root = this.root) {
+    if (!root) return null; //Returns null if the tree is empty; also the base case for recursive function
+    if (!callback) {
+      throw new Error("Callback function not passed as parameter."); //Throws error if callback is not passed as the parameter
+    }
+    callback(root); //Recursively traverse the root node
+    this.preOrder(callback, root.left); //Recursively traverse the left sub-tree
+    this.preOrder(callback, root.right); //Recursively traverse the right sub-tree
+  }
+
+  //Post-order traversal(traverse left sub-tree first, folllowed by the right sub-tree and the root node)
+  postOrder(callback, root = this.root) {
+    if (!root) return null; //Returns null if the tree is empty; also the base case for recursive function
+    if (!callback) {
+      throw new Error("Callback function not passed as parameter."); //Throws error if callback is not passed as the parameter
+    }
+    this.postOrder(callback, root.left); //Recursively traverse the left sub-tree
+    this.postOrder(callback, root.right); //Recursively traverse the right sub-tree
+    callback(root); //Recursively traverse the root node
+  }
+
   //Prints the tree in an understanding visual format
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
@@ -156,13 +216,13 @@ class Tree {
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.insert(7890000);
+// console.log(tree.find(1))]
 tree.prettyPrint();
-// console.log(tree.find(1))
-tree.deleteItem(23);
-tree.deleteItem(7890000);
 console.log(`----------------------`);
-tree.prettyPrint();
-tree.deleteItem(8);
+tree.levelOrder(getNode);
 console.log(`----------------------`);
-tree.prettyPrint();
-// tree.print()
+tree.inOrder(getNode);
+console.log(`----------------------`);
+tree.preOrder(getNode);
+console.log(`----------------------`);
+tree.postOrder(getNode);
