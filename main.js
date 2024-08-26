@@ -238,14 +238,15 @@ class Tree {
     return false;
   }
 
+  //Rebalances the binary tree
   rebalance() {
     if (this.isBalanced()) {
-      return;
+      return; //Returns if the tree is already balanced
     }
-    const newArray = [];
-    this.inOrder((node) => newArray.push(node.value));
+    const newArray = []; //Empty arrays to store sorted elements of the unbalanced tree
+    this.inOrder((node) => newArray.push(node.value)); //inOrder function called; pushes the value of every individual node to newArray
 
-    this.root = this.buildTree(newArray);
+    this.root = this.buildTree(newArray); //Builds a new tree with newly sorted elements/nodes
   }
 
   //Prints the tree in an understanding visual format
@@ -273,25 +274,25 @@ class Tree {
 }
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-tree.insert(7890000);
-tree.insert(-1);
-tree.insert(-10);
-tree.insert(-100);
-tree.insert(-10000);
-tree.insert(-10000000000);
-// console.log(tree.find(1))]
-tree.prettyPrint();
-console.log(`----------------------`);
-// tree.levelOrder(getNode);
+// tree.insert(7890000);
+// tree.insert(-1);
+// tree.insert(-10);
+// tree.insert(-100);
+// tree.insert(-10000);
+// tree.insert(-10000000000);
+// // console.log(tree.find(1))]
+// tree.prettyPrint();
 // console.log(`----------------------`);
-// tree.inOrder(getNode);
+// // tree.levelOrder(getNode);
+// // console.log(`----------------------`);
+// // tree.inOrder(getNode);
+// // console.log(`----------------------`);
+// // tree.preOrder(getNode);
+// // console.log(`----------------------`);
+// // tree.postOrder(getNode);
+// console.log(tree.height(tree.root));
+// console.log(tree.isBalanced());
+// tree.rebalance();
 // console.log(`----------------------`);
-// tree.preOrder(getNode);
-// console.log(`----------------------`);
-// tree.postOrder(getNode);
-console.log(tree.height(tree.root));
-console.log(tree.isBalanced());
-tree.rebalance();
-console.log(`----------------------`);
-tree.prettyPrint();
-console.log(tree.isBalanced());
+// tree.prettyPrint();
+// console.log(tree.isBalanced());
